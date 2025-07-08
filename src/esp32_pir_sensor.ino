@@ -13,7 +13,7 @@
  * - PIR GND -> ESP32 GND
  * - PIR OUT -> ESP32 GPIO 2 (configurable)
  *
- * Author: Your Name
+ * Author: TerrifiedBug
  * License: MIT
  */
 
@@ -25,13 +25,13 @@
 const char* FIRMWARE_VERSION = "1.1.0";
 const char* DEVICE_NAME = "ESP32-PIR-Sensor";
 
-// WiFi credentials - CHANGE THESE!
-const char* ssid = "BT-PTCTQR";
-const char* password = "rDkq3ANaFpKcYk";
+// WiFi credentials!
+const char* ssid = "ssid";
+const char* password = "password";
 
 // Hardware configuration
 const int PIR_PIN = 2;
-const int LED_PIN = 4; // Use GPIO 4 for LED status indicator
+const int LED_PIN = 4;
 
 // Network configuration
 const int HTTP_PORT = 80;

@@ -113,27 +113,6 @@ scrape_configs:
 - `GET /metrics` - Prometheus metrics endpoint
 - `GET /health` - JSON health check endpoint
 
-## Troubleshooting
-
-### WiFi Connection Issues
-
-- Verify SSID and password are correct
-- Check if your network supports 2.4GHz (ESP32 doesn't support 5GHz)
-- Ensure the ESP32 is within range of your WiFi router
-
-### PIR Sensor Not Working
-
-- Check wiring connections
-- Verify power supply (3.3V or 5V depending on your PIR module)
-- Allow 1-2 minutes for PIR sensor calibration after power-on
-- Adjust sensitivity potentiometer on the PIR module if needed
-
-### Serial Monitor Shows No Output
-
-- Check baud rate is set to 115200
-- Verify correct COM port is selected
-- Try pressing the reset button on ESP32
-
 ## Contributing
 
 1. Fork the repository
