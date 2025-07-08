@@ -1,0 +1,378 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "ESP32 PIR Motion Sensor Dashboard",
+    "tags": ["esp32", "pir", "motion", "sensor"],
+    "style": "dark",
+    "timezone": "browser",
+    "refresh": "5s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Motion Detection Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "pir_motion_detected",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "text": "No Motion",
+                    "color": "green"
+                  },
+                  "1": {
+                    "text": "Motion Detected",
+                    "color": "red"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Motion Count (Total)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "pir_motion_count_total",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 100
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Motion Events Over Time",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(pir_motion_count_total[5m]) * 300",
+            "legendFormat": "{{location}} - Motion Rate (5min)"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Events per 5 minutes",
+            "min": 0
+          }
+        ],
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 4,
+        "title": "System Uptime",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "esp32_uptime_seconds",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 3600
+                },
+                {
+                  "color": "green",
+                  "value": 86400
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 17
+        }
+      },
+      {
+        "id": 5,
+        "title": "WiFi Signal Strength",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "wifi_signal_strength_dbm",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "dBm",
+            "min": -100,
+            "max": -30,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": -100
+                },
+                {
+                  "color": "yellow",
+                  "value": -70
+                },
+                {
+                  "color": "green",
+                  "value": -50
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 17
+        }
+      },
+      {
+        "id": 6,
+        "title": "Free Memory",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "esp32_free_heap_bytes",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "min": 0,
+            "max": 327680,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50000
+                },
+                {
+                  "color": "green",
+                  "value": 100000
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 16,
+          "y": 17
+        }
+      },
+      {
+        "id": 7,
+        "title": "Motion Activity Heatmap",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "increase(pir_motion_count_total[1h])",
+            "legendFormat": "{{location}}"
+          }
+        ],
+        "heatmap": {
+          "xBucketSize": "1h",
+          "yBucketSize": "1"
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 25
+        }
+      },
+      {
+        "id": 8,
+        "title": "HTTP Requests",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[5m]) * 300",
+            "legendFormat": "{{location}} - Total Requests"
+          },
+          {
+            "expr": "rate(http_metrics_requests_total[5m]) * 300",
+            "legendFormat": "{{location}} - Metrics Requests"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Requests per 5 minutes",
+            "min": 0
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 34
+        }
+      },
+      {
+        "id": 9,
+        "title": "WiFi Connection Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "wifi_connected",
+            "legendFormat": "{{location}} - {{device}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "text": "Disconnected",
+                    "color": "red"
+                  },
+                  "1": {
+                    "text": "Connected",
+                    "color": "green"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 34
+        }
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "location",
+          "type": "query",
+          "query": "label_values(pir_motion_detected, location)",
+          "refresh": 1,
+          "includeAll": true,
+          "allValue": ".*",
+          "multi": true
+        },
+        {
+          "name": "device",
+          "type": "query",
+          "query": "label_values(pir_motion_detected{location=~\"$location\"}, device)",
+          "refresh": 1,
+          "includeAll": true,
+          "allValue": ".*",
+          "multi": true
+        }
+      ]
+    },
+    "annotations": {
+      "list": [
+        {
+          "name": "Motion Events",
+          "datasource": "Prometheus",
+          "expr": "changes(pir_motion_detected[1m]) > 0",
+          "titleFormat": "Motion {{location}}",
+          "textFormat": "Motion detected at {{location}}",
+          "iconColor": "red"
+        }
+      ]
+    }
+  }
+}

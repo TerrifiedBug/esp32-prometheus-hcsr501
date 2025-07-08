@@ -1,0 +1,98 @@
+# Prometheus Configuration Example for ESP32 PIR Sensor
+# Add this configuration to your prometheus.yml file
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # ESP32 PIR Motion Sensor
+  - job_name: "esp32-pir-sensor"
+    static_configs:
+      - targets: ["192.168.1.100:80"] # Replace with your ESP32 IP address
+    scrape_interval: 10s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+
+    # Optional: Add labels to identify this sensor
+    relabel_configs:
+      - target_label: "location"
+        replacement: "living_room" # Customize based on sensor location
+      - target_label: "sensor_type"
+        replacement: "pir_motion"
+
+  # Multiple ESP32 sensors example
+  - job_name: "esp32-pir-sensors-multi"
+    static_configs:
+      - targets:
+          - "192.168.1.100:80" # Living room sensor
+          - "192.168.1.101:80" # Kitchen sensor
+          - "192.168.1.102:80" # Bedroom sensor
+        labels:
+          sensor_type: "pir_motion"
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+    # Relabel targets to add location information
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '192\.168\.1\.100:80'
+        target_label: "location"
+        replacement: "living_room"
+      - source_labels: [__address__]
+        regex: '192\.168\.1\.101:80'
+        target_label: "location"
+        replacement: "kitchen"
+      - source_labels: [__address__]
+        regex: '192\.168\.1\.102:80'
+        target_label: "location"
+        replacement: "bedroom"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+# Example alerting rules (save as esp32_pir_rules.yml)
+# groups:
+#   - name: esp32_pir_alerts
+#     rules:
+#       - alert: ESP32PIRSensorDown
+#         expr: up{job="esp32-pir-sensor"} == 0
+#         for: 1m
+#         labels:
+#           severity: warning
+#         annotations:
+#           summary: "ESP32 PIR sensor is down"
+#           description: "ESP32 PIR sensor {{ $labels.instance }} has been down for more than 1 minute."
+#
+#       - alert: ESP32PIRHighMotionActivity
+#         expr: increase(pir_motion_count_total[5m]) > 50
+#         for: 2m
+#         labels:
+#           severity: info
+#         annotations:
+#           summary: "High motion activity detected"
+#           description: "ESP32 PIR sensor {{ $labels.instance }} detected {{ $value }} motion events in the last 5 minutes."
+#
+#       - alert: ESP32PIRLowMemory
+#         expr: esp32_free_heap_bytes < 50000
+#         for: 5m
+#         labels:
+#           severity: warning
+#         annotations:
+#           summary: "ESP32 PIR sensor low memory"
+#           description: "ESP32 PIR sensor {{ $labels.instance }} has only {{ $value }} bytes of free memory."
+#
+#       - alert: ESP32PIRWiFiDisconnected
+#         expr: wifi_connected == 0
+#         for: 30s
+#         labels:
+#           severity: critical
+#         annotations:
+#           summary: "ESP32 PIR sensor WiFi disconnected"
+#           description: "ESP32 PIR sensor {{ $labels.instance }} has lost WiFi connection."

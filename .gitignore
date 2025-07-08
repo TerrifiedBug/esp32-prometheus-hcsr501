@@ -1,0 +1,73 @@
+# Arduino IDE files
+*.hex
+*.elf
+*.map
+*.lst
+*.sym
+*.lss
+*.eep
+*.srec
+*.bin
+*.ino.cpp
+
+# Build directories
+build/
+.build/
+.vscode/
+.vs/
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+lib/readme.txt
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*~
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# IDE files
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.iml
+
+# Configuration files with sensitive data
+config.h
+secrets.h
+wifi_credentials.h
+
+# Log files
+*.log
+
+# Compiled libraries
+*.a
+*.so
+*.dll
+
+# Python cache (if using any Python tools)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node modules (if using any Node.js tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation build
+docs/_build/
+docs/
